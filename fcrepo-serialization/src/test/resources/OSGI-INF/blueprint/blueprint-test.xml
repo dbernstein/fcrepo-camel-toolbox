@@ -19,13 +19,11 @@
         <cm:property name="serialization.mimeType" value="text/turtle"/>
         <cm:property name="serialization.extension" value="ttl"/>
         <cm:property name="filter.containers" value="http://localhost:8080/fcrepo/rest/audit"/>
-        <cm:property name="jms.brokerUrl" value="tcp://localhost:61616"/>
     </cm:default-properties>
   </cm:property-placeholder>
 
-  <bean id="broker" class="org.apache.activemq.camel.component.ActiveMQComponent">
-     <property name="brokerURL" value="${jms.brokerUrl}"/>
-  </bean>
+  <bean id="broker" class="org.apache.camel.component.seda.SedaComponent"/>
+
 
   <camelContext id="FcrepoSerialization" xmlns="http://camel.apache.org/schema/blueprint">
       <package>org.fcrepo.camel.serialization</package>

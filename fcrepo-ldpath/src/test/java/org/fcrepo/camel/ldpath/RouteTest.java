@@ -141,7 +141,7 @@ public class RouteTest extends CamelBlueprintTestSupport {
             @Override
             public void configure() throws Exception {
                 replaceFromWith("direct:start");
-                mockEndpointsAndSkip("*");
+                mockEndpointsAndSkip("language:simple:resource:classpath:org/fcrepo/camel/ldpath/options.ttl");
             }
         });
         context.start();

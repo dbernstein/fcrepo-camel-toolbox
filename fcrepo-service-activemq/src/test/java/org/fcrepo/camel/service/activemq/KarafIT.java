@@ -99,24 +99,32 @@ public class KarafIT {
         final String rmiRegistryPort = cm.getProperty("karaf.rmiRegistry.port");
         final String rmiServerPort = cm.getProperty("karaf.rmiServer.port");
         final String sshPort = cm.getProperty("karaf.ssh.port");
+        final String karafVersion = cm.getProperty("karaf.version");
+        final String camelVersion = cm.getProperty("camel.version");
+        final String activeMQKarafVersion = cm.getProperty("activemq.version");
+        final String fcrepoCamelVersion = cm.getProperty("fcrepo-camel.version");
+
         return new Option[] {
             karafDistributionConfiguration()
                 .frameworkUrl(maven().groupId("org.apache.karaf").artifactId("apache-karaf")
-                        .versionAsInProject().type("zip"))
+                        .version(karafVersion).type("zip"))
                 .unpackDirectory(new File("target", "exam"))
                 .useDeployFolder(false),
             logLevel(LogLevel.WARN),
             keepRuntimeFolder(),
             configureConsole().ignoreLocalConsole(),
+            features(maven().groupId("org.apache.karaf.features").artifactId("spring-legacy")
+                .type("xml").classifier("features").version(karafVersion)),
+
             features(maven().groupId("org.apache.karaf.features").artifactId("standard")
-                        .type("xml").classifier("features").versionAsInProject(), "scr"),
+                        .type("xml").classifier("features").version(karafVersion), "scr"),
             features(maven().groupId("org.apache.camel.karaf").artifactId("apache-camel")
-                        .type("xml").classifier("features").versionAsInProject(), "camel",
-                        "camel-blueprint", "camel-http4", "camel-jms"),
+                        .type("xml").classifier("features").version(camelVersion), "camel",
+                        "camel-blueprint", "camel-http4", "camel-jms", "aries-blueprint"),
             features(maven().groupId("org.apache.activemq").artifactId("activemq-karaf")
-                        .type("xml").classifier("features").versionAsInProject(), "activemq-camel"),
+                        .type("xml").classifier("features").version(activeMQKarafVersion), "activemq-camel", "activemq-osgi", "activemq-client"),
             features(maven().groupId("org.fcrepo.camel").artifactId("fcrepo-camel")
-                        .type("xml").classifier("features").versionAsInProject(), "fcrepo-camel"),
+                        .type("xml").classifier("features").version(fcrepoCamelVersion), "fcrepo-camel"),
 
             CoreOptions.systemProperty("fcrepo.port").value(fcrepoPort),
             CoreOptions.systemProperty("jms.port").value(jmsPort),
